@@ -35,10 +35,10 @@ let html
 $('img').each( function(i){
     const src = attribute [$(this).attr('src')]
     $(this).attr('src', src.src)
-$(this).attr('decoding', 'asynchronous')
-$(this).attr('width', src.width)
-$(this).attr('height', 'auto')
-if(i>1){
+$(this).attr('decoding', 'async')
+// $(this).attr('width', src.width)
+// $(this).attr('height', 'auto')
+if(i>0){
     $(this).attr('loading', 'lazy')
 }else{
     $(this).attr('fetchpriority', 'high') 
