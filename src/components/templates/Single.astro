@@ -8,7 +8,7 @@ const attribute = {}
 
 const images = $('img').toArray()
 for(let image of images){
-    let max_size = 300,
+    let max_size = 588,
                     width = image.attribs.width,
                     height = image.attribs.height;
 
@@ -24,8 +24,8 @@ for(let image of images){
                     }
                 }
                 if(!width){
-                    width = 300
-                    height = 600
+                    width = max_size
+                    height = max_size * 2
                 }
     console.log({height, width},image.attribs)
     const src = await getImage({src: image.attribs.src, format: 'webp',width: width , height: height})
@@ -36,6 +36,8 @@ $('img').each( function(i){
     const src = attribute [$(this).attr('src')]
     $(this).attr('src', src.src)
 $(this).attr('decoding', 'asynchronous')
+$(this).attr('width', src.width)
+$(this).attr('height', 'auto')
 if(i>1){
     $(this).attr('loading', 'lazy')
 }else{
