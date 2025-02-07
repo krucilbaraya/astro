@@ -1,5 +1,6 @@
 ---
 const { node } = Astro.props;
+import { Image, Picture } from '@astrojs/image/components';
 import {getImage } from '@astrojs/image'
 import * as cheerio from 'cheerio';
 const $ = cheerio.load(node.content,null,false);
@@ -7,7 +8,27 @@ const attribute = {}
 
 const images = $('img').toArray()
 for(let image of images){
-    const src = await getImage({src: image.attribs.src, format: 'webp',width:"300" , height:"auto"})
+    let max_size = 300,
+                    width = image.attribs.width,
+                    height = image.attribs.height;
+
+                if (width > height) {
+                    if (width > max_size) {
+                        height *= max_size / width;
+                        width = max_size;
+                    }
+                } else {
+                    if (height > max_size) {
+                        width *= max_size / height;
+                        height = max_size;
+                    }
+                }
+                if(!width){
+                    width = 300
+                    height = 600
+                }
+    console.log({height, width},image.attribs)
+    const src = await getImage({src: image.attribs.src, format: 'webp',width: width , height: height})
     attribute[image.attribs.src] = src
 }
 let html

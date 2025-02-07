@@ -1,15 +1,15 @@
 import { defineConfig } from 'astro/config';
 import image from '@astrojs/image';
 // import vercel from '@astrojs/vercel';
-import vercelStatic from '@astrojs/vercel/serverless';
+import vercelStatic from '@astrojs/vercel/static';
 
 // https://astro.build/config
 import node from "@astrojs/node";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  // output: 'static',
+  // output: 'server',
+  output: 'static',
   adapter: vercelStatic(
     {
       imagesConfig: {
