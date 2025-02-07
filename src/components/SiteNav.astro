@@ -9,7 +9,7 @@ const {menu, generalSettings} = Astro.props;
     <div class="hamburger">&#9776;</div>
     <nav>
         <ul>
-        {menu.menuItems.nodes.map(menuItem => {
+        {menu?.menuItems.nodes.map(menuItem => {
             return (<li>
                         <a href={menuItem.uri || '/'}>{menuItem.label}</a>
                     </li>)

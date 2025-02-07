@@ -1,31 +1,32 @@
 ---
 const { node } = Astro.props;
+import { Image, Picture } from '@astrojs/image/components';
+import {getImage } from '@astrojs/image'
+import * as cheerio from 'cheerio';
+const $ = cheerio.load(node.content,null,false);
+const attribute = {}
+
+const images = $('img').toArray()
+for(let image of images){
+    const src = await getImage({src: image.attribs.src, format: 'webp',width:"300" , height:"auto"})
+    attribute[image.attribs.src] = src
+}
+let html
+$('img').each( function(i){
+    const src = attribute [$(this).attr('src')]
+    $(this).attr('src', src.src)
+$(this).attr('decoding', 'asynchronous')
+if(i>1){
+    $(this).attr('loading', 'lazy')
+}else{
+    $(this).attr('fetchpriority', 'high') 
+}
+})
+    html = $.html()
+
 --- 
 
- <h1>{node.title}</h1>
-<!-- Display categories links if node has terms -->
- { node.categories ?
-    node.categories.nodes.map(category => (<a class='term-link' href={category.uri}>{category.name}</a>)) :     
-    null 
- }
-<!-- Only show date if node is a Post -->
- {
-    node.__typename === 'Post' ? 
-    (<p class='post-details'>
-        Posted on <time datetime={node.date}>{new Date(node.date).toLocaleDateString()}</time>
-    </p>):
-    null
- }
- <img class='featured-image' 
-    src={node.featuredImage?.node?.mediaItemUrl} 
-    srcset={node.featuredImage?.node?.srcSet} 
-    alt={node.featuredImage?.node?.altText}
-    loading='lazy'
-    width={node.featuredImage?.node?.mediaDetails?.width}
-    height={node.featuredImage?.node?.mediaDetails?.height}
- >
- 
- <article set:html={node.content}>
+ <article set:html={html}>
  </article>
 
  <style is:global>
@@ -35,6 +36,9 @@ const { node } = Astro.props;
     }
 </style>
 <style>
+    				.elementor-button-link{
+					background-color: blue !important;
+				}
     img.featured-image {
         width:100%;
         border-radius:  10px;
