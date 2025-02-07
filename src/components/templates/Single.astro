@@ -1,6 +1,5 @@
 ---
 const { node } = Astro.props;
-import { Image, Picture } from '@astrojs/image/components';
 import {getImage } from '@astrojs/image'
 import * as cheerio from 'cheerio';
 const $ = cheerio.load(node.content,null,false);
